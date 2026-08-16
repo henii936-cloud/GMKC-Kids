@@ -3,6 +3,9 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import KidsLayout from "./components/KidsLayout";
 import Login from "./pages/Login";
 import KidsAttendance from "./pages/KidsAttendance";
+import KidsHistoryPage from "./pages/KidsHistoryPage";
+import KidsRoster from "./pages/KidsRoster";
+import KidsProfile from "./pages/KidsProfile";
 import { Loader2 } from "lucide-react";
 
 function AppContent() {
@@ -42,6 +45,10 @@ function AppContent() {
     <Routes>
       <Route element={<KidsLayout />}>
         <Route path="/" element={<KidsAttendance />} />
+        <Route path="/attendance" element={<KidsAttendance />} />
+        <Route path="/history" element={<KidsHistoryPage />} />
+        <Route path="/roster" element={<KidsRoster />} />
+        <Route path="/profile" element={<KidsProfile />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

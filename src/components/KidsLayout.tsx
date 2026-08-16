@@ -1,94 +1,128 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { LogOut, Baby } from "lucide-react";
+import { Baby, User } from "lucide-react";
+import BottomNav from "./BottomNav";
 
 export default function KidsLayout() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#f8f9fa" }}>
-      {/* Top Header */}
+    <div style={{ minHeight: "100vh", backgroundColor: "#f8f9fa", display: "flex", flexDirection: "column" }}>
+      {/* ── Native Mobile App Top Navigation Bar ── */}
       <header
+        className="glass-header"
         style={{
-          backgroundColor: "#002c53",
-          color: "#fff",
-          padding: "12px 16px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          boxShadow: "0 2px 10px rgba(0,0,0,0.15)",
           position: "sticky",
           top: 0,
           zIndex: 50,
+          padding: "12px 16px",
+          paddingTop: "calc(env(safe-area-inset-top, 0px) + 12px)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <Link
+          to="/"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            textDecoration: "none",
+            color: "#fff",
+          }}
+        >
           <div
             style={{
               width: "36px",
               height: "36px",
-              borderRadius: "10px",
-              backgroundColor: "rgba(255,255,255,0.15)",
+              borderRadius: "12px",
+              backgroundColor: "rgba(5, 150, 105, 0.35)",
+              border: "1px solid rgba(52, 211, 153, 0.4)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
             }}
           >
-            <Baby size={20} color="#ffedd5" />
+            <Baby size={20} color="#fef08a" />
           </div>
           <div>
-            <h1 style={{ fontSize: "15px", fontWeight: "900", margin: 0, lineHeight: "1.2" }}>
-              Kids Ministry
+            <h1 style={{ fontSize: "15px", fontWeight: "900", margin: 0, lineHeight: "1.2", letterSpacing: "0.2px" }}>
+              GMCK <span style={{ color: "#34d399" }}>Kids</span>
             </h1>
-            <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.7)", fontWeight: "600" }}>
-              Attendance Portal
+            <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.75)", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+              Sunday School Portal
             </span>
           </div>
-        </div>
+        </Link>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+        <Link
+          to="/profile"
+          title="View Profile"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "4px 10px 4px 6px",
+            borderRadius: "20px",
+            backgroundColor: "rgba(255, 255, 255, 0.12)",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            textDecoration: "none",
+            color: "#fff",
+            cursor: "pointer",
+            transition: "all 0.15s ease",
+          }}
+        >
+          <div
+            style={{
+              width: "26px",
+              height: "26px",
+              borderRadius: "13px",
+              backgroundColor: "#059669",
+              color: "#fff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "12px",
+              fontWeight: "900",
+            }}
+          >
+            {user?.full_name?.charAt(0) || <User size={14} />}
+          </div>
           {user?.full_name && (
             <span
               style={{
                 fontSize: "12px",
                 fontWeight: "700",
                 color: "#ffedd5",
-                maxWidth: "120px",
+                maxWidth: "100px",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
               }}
             >
-              {user.full_name}
+              {user.full_name.split(" ")[0]}
             </span>
           )}
-          <button
-            onClick={logout}
-            title="Log out"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "6px 12px",
-              borderRadius: "8px",
-              backgroundColor: "rgba(239, 68, 68, 0.2)",
-              color: "#fca5a5",
-              border: "1px solid rgba(239, 68, 68, 0.3)",
-              fontSize: "12px",
-              fontWeight: "700",
-              cursor: "pointer",
-            }}
-          >
-            <LogOut size={14} />
-            <span>Exit</span>
-          </button>
-        </div>
+        </Link>
       </header>
 
-      {/* Main Content Area */}
-      <main style={{ padding: "16px", paddingBottom: "32px" }}>
+      {/* ── Main Content Area with Bottom Dock Clearance ── */}
+      <main
+        style={{
+          flex: 1,
+          padding: "16px",
+          paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 84px)",
+          boxSizing: "border-box",
+        }}
+      >
         <Outlet />
       </main>
+
+      {/* ── Real Mobile App Bottom Navigation Bar ── */}
+      <BottomNav />
     </div>
   );
 }
